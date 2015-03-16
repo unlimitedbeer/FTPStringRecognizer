@@ -23,8 +23,6 @@ struct FTPRecord {
 
 class Recognizer {
 	recognizerContext *fsm; // класс, реализующий конечный автомат
-	int charIndex;		// индекс текущего символа в строке
-	int stringIndex;	// индекс текущей строки
 	int fieldLength;	// длина текущего прочитанного пол€
 
 	FTPRecord currentRecord; // пол€ текущей строки
@@ -42,43 +40,42 @@ public:
 
 	// эти функции провер€ют текущий символ на корректность 
 	// в соответствии с правилами задани€ текущего пол€
-	void ShowPreambula1Error();
-	bool isPreambulaCorrect();
-	bool isUsernameCorrect();
-	bool isServerCorrect();
-	bool isDomainCorrect();
-	bool isZoneCorrect();
+	void ShowPreambula1Error(char c);
+	bool isPreambulaCorrect(char c);
+	bool isUsernameCorrect(char c);
+	bool isServerCorrect(char c);
+	bool isDomainCorrect(char c);
+	bool isZoneCorrect(char c);
 
 	// эти функции провер€ют, что чтение текущего пол€ завершено
-	bool isPreambulaFinished();
-	bool isUsernameFinished();
-	bool isServerFinished();
-	bool isDomainFinished();
-	bool isZoneFinished();
+	bool isPreambulaFinished(char c);
+	bool isUsernameFinished(char c);
+	bool isServerFinished(char c);
+	bool isDomainFinished(char c);
+	bool isZoneFinished(char c);
 
 	// строка закончилась на состо€нии "домен"? если да, то это было им€ зоны
 	// тк им€ домена €вл€етс€ необ€зательным
-	bool isStringFinished(); 
+	bool isStringFinished(char c);
 
 	// эти функции вызываютс€, когда чтение текущего пол€ завершено 
 	// и произошел переход к следующему
-	void preambulaPassed();
-	void usernamePassed();
-	void serverPassed();
-	void domainPassed();
-	void zonePassed();
+	void preambulaPassed(char c);
+	void usernamePassed(char c);
+	void serverPassed(char c);
+	void domainPassed(char c);
+	void zonePassed(char c);
 
 	// эти функции вызываютс€, когда происходит чтение очередного
 	// символа соответствующего пол€
-	void preambulaReading();
-	void usernameReading();
-	void serverReading();
-	void domainReading();
-	void zoneReading();
+	void preambulaReading(char c);
+	void usernameReading(char c);
+	void serverReading(char c);
+	void domainReading(char c);
+	void zoneReading(char c);
 
-	char getCurrentChar();
-	void ShowError();
-	void ReadChar();
+	void showError(char c);
+	void ReadChar(char c);
 
 	bool isLetterOrNumber(char c);
 

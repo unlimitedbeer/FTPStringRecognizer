@@ -28,7 +28,7 @@ void RecognizerState::nil(recognizerContext& context)
     Default(context);
 }
 
-void RecognizerState::readChar(recognizerContext& context)
+void RecognizerState::readChar(recognizerContext& context, const char c)
 {
     Default(context);
 }
@@ -42,17 +42,17 @@ void RecognizerState::Default(recognizerContext& context)
 
 }
 
-void MainMap_Preambula::readChar(recognizerContext& context)
+void MainMap_Preambula::readChar(recognizerContext& context, const char c)
 {
     Recognizer& ctxt = context.getOwner();
 
-    if (ctxt.isPreambulaFinished())
+    if (ctxt.isPreambulaFinished(c))
     {
         context.getState().Exit(context);
         context.clearState();
         try
         {
-            ctxt.preambulaPassed();
+            ctxt.preambulaPassed(c);
             context.setState(MainMap::Username);
         }
         catch (...)
@@ -62,14 +62,14 @@ void MainMap_Preambula::readChar(recognizerContext& context)
         }
         context.getState().Entry(context);
     }
-    else if (ctxt.isPreambulaCorrect())
+    else if (ctxt.isPreambulaCorrect(c))
 
     {
         context.getState().Exit(context);
         context.clearState();
         try
         {
-            ctxt.preambulaReading();
+            ctxt.preambulaReading(c);
             context.setState(MainMap::Preambula);
         }
         catch (...)
@@ -85,7 +85,7 @@ void MainMap_Preambula::readChar(recognizerContext& context)
         context.clearState();
         try
         {
-            ctxt.ShowError();
+            ctxt.showError(c);
             context.setState(MainMap::Error);
         }
         catch (...)
@@ -98,17 +98,17 @@ void MainMap_Preambula::readChar(recognizerContext& context)
 
 }
 
-void MainMap_Username::readChar(recognizerContext& context)
+void MainMap_Username::readChar(recognizerContext& context, const char c)
 {
     Recognizer& ctxt = context.getOwner();
 
-    if (ctxt.isUsernameFinished())
+    if (ctxt.isUsernameFinished(c))
     {
         context.getState().Exit(context);
         context.clearState();
         try
         {
-            ctxt.usernamePassed();
+            ctxt.usernamePassed(c);
             context.setState(MainMap::Server);
         }
         catch (...)
@@ -118,14 +118,14 @@ void MainMap_Username::readChar(recognizerContext& context)
         }
         context.getState().Entry(context);
     }
-    else if (ctxt.isUsernameCorrect())
+    else if (ctxt.isUsernameCorrect(c))
 
     {
         context.getState().Exit(context);
         context.clearState();
         try
         {
-            ctxt.usernameReading();
+            ctxt.usernameReading(c);
             context.setState(MainMap::Username);
         }
         catch (...)
@@ -141,7 +141,7 @@ void MainMap_Username::readChar(recognizerContext& context)
         context.clearState();
         try
         {
-            ctxt.ShowError();
+            ctxt.showError(c);
             context.setState(MainMap::Error);
         }
         catch (...)
@@ -154,17 +154,17 @@ void MainMap_Username::readChar(recognizerContext& context)
 
 }
 
-void MainMap_Server::readChar(recognizerContext& context)
+void MainMap_Server::readChar(recognizerContext& context, const char c)
 {
     Recognizer& ctxt = context.getOwner();
 
-    if (ctxt.isServerFinished())
+    if (ctxt.isServerFinished(c))
     {
         context.getState().Exit(context);
         context.clearState();
         try
         {
-            ctxt.serverPassed();
+            ctxt.serverPassed(c);
             context.setState(MainMap::Domain);
         }
         catch (...)
@@ -174,14 +174,14 @@ void MainMap_Server::readChar(recognizerContext& context)
         }
         context.getState().Entry(context);
     }
-    else if (ctxt.isServerCorrect())
+    else if (ctxt.isServerCorrect(c))
 
     {
         context.getState().Exit(context);
         context.clearState();
         try
         {
-            ctxt.serverReading();
+            ctxt.serverReading(c);
             context.setState(MainMap::Server);
         }
         catch (...)
@@ -197,7 +197,7 @@ void MainMap_Server::readChar(recognizerContext& context)
         context.clearState();
         try
         {
-            ctxt.ShowError();
+            ctxt.showError(c);
             context.setState(MainMap::Error);
         }
         catch (...)
@@ -210,17 +210,17 @@ void MainMap_Server::readChar(recognizerContext& context)
 
 }
 
-void MainMap_Domain::readChar(recognizerContext& context)
+void MainMap_Domain::readChar(recognizerContext& context, const char c)
 {
     Recognizer& ctxt = context.getOwner();
 
-    if (ctxt.isDomainFinished())
+    if (ctxt.isDomainFinished(c))
     {
         context.getState().Exit(context);
         context.clearState();
         try
         {
-            ctxt.domainPassed();
+            ctxt.domainPassed(c);
             context.setState(MainMap::Zone);
         }
         catch (...)
@@ -230,14 +230,14 @@ void MainMap_Domain::readChar(recognizerContext& context)
         }
         context.getState().Entry(context);
     }
-    else if (ctxt.isStringFinished())
+    else if (ctxt.isStringFinished(c))
 
     {
         context.getState().Exit(context);
         context.clearState();
         try
         {
-            ctxt.domainPassed();
+            ctxt.domainPassed(c);
             context.setState(MainMap::End);
         }
         catch (...)
@@ -247,14 +247,14 @@ void MainMap_Domain::readChar(recognizerContext& context)
         }
         context.getState().Entry(context);
     }
-    else if (ctxt.isDomainCorrect())
+    else if (ctxt.isDomainCorrect(c))
 
     {
         context.getState().Exit(context);
         context.clearState();
         try
         {
-            ctxt.domainReading();
+            ctxt.domainReading(c);
             context.setState(MainMap::Domain);
         }
         catch (...)
@@ -270,7 +270,7 @@ void MainMap_Domain::readChar(recognizerContext& context)
         context.clearState();
         try
         {
-            ctxt.ShowError();
+            ctxt.showError(c);
             context.setState(MainMap::Error);
         }
         catch (...)
@@ -283,17 +283,17 @@ void MainMap_Domain::readChar(recognizerContext& context)
 
 }
 
-void MainMap_Zone::readChar(recognizerContext& context)
+void MainMap_Zone::readChar(recognizerContext& context, const char c)
 {
     Recognizer& ctxt = context.getOwner();
 
-    if (ctxt.isZoneFinished())
+    if (ctxt.isZoneFinished(c))
     {
         context.getState().Exit(context);
         context.clearState();
         try
         {
-            ctxt.zonePassed();
+            ctxt.zonePassed(c);
             context.setState(MainMap::End);
         }
         catch (...)
@@ -303,14 +303,14 @@ void MainMap_Zone::readChar(recognizerContext& context)
         }
         context.getState().Entry(context);
     }
-    else if (ctxt.isZoneCorrect())
+    else if (ctxt.isZoneCorrect(c))
 
     {
         context.getState().Exit(context);
         context.clearState();
         try
         {
-            ctxt.zoneReading();
+            ctxt.zoneReading(c);
             context.setState(MainMap::Zone);
         }
         catch (...)
@@ -326,7 +326,7 @@ void MainMap_Zone::readChar(recognizerContext& context)
         context.clearState();
         try
         {
-            ctxt.ShowError();
+            ctxt.showError(c);
             context.setState(MainMap::Error);
         }
         catch (...)

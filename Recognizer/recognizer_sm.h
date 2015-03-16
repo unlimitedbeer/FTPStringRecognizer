@@ -40,7 +40,7 @@ public:
     virtual void Exit(recognizerContext&) {};
 
     virtual void nil(recognizerContext& context);
-    virtual void readChar(recognizerContext& context);
+    virtual void readChar(recognizerContext& context, const char c);
 
 protected:
 
@@ -79,7 +79,7 @@ public:
     : MainMap_Default(name, stateId)
     {};
 
-    virtual void readChar(recognizerContext& context);
+    virtual void readChar(recognizerContext& context, const char c);
 };
 
 class MainMap_Username :
@@ -90,7 +90,7 @@ public:
     : MainMap_Default(name, stateId)
     {};
 
-    virtual void readChar(recognizerContext& context);
+    virtual void readChar(recognizerContext& context, const char c);
 };
 
 class MainMap_Server :
@@ -101,7 +101,7 @@ public:
     : MainMap_Default(name, stateId)
     {};
 
-    virtual void readChar(recognizerContext& context);
+    virtual void readChar(recognizerContext& context, const char c);
 };
 
 class MainMap_Domain :
@@ -112,7 +112,7 @@ public:
     : MainMap_Default(name, stateId)
     {};
 
-    virtual void readChar(recognizerContext& context);
+    virtual void readChar(recognizerContext& context, const char c);
 };
 
 class MainMap_Zone :
@@ -123,7 +123,7 @@ public:
     : MainMap_Default(name, stateId)
     {};
 
-    virtual void readChar(recognizerContext& context);
+    virtual void readChar(recognizerContext& context, const char c);
 };
 
 class MainMap_Error :
@@ -188,9 +188,9 @@ public:
         getState().nil(*this);
     };
 
-    inline void readChar()
+    inline void readChar(const char c)
     {
-        getState().readChar(*this);
+        getState().readChar(*this, c);
     };
 
 private:

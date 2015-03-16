@@ -13,55 +13,56 @@ Recognizer::~Recognizer()
 	delete fsm;
 }
 
-bool Recognizer::isPreambulaCorrect()
+bool Recognizer::isPreambulaCorrect(char c)
 {
 	if (fieldLength >= MAX_LENGTH_PREAMBULA)
 		return false;
 
 	return (
-		(getCurrentChar() == PREAMBULA[charIndex]) || 
-		(getCurrentChar() == PREAMBULA[charIndex] - HIGH_AND_LOW_LETTERS_DIFFERENCE)
+		(c == PREAMBULA[fieldLength]) || 
+		(c == PREAMBULA[fieldLength] - HIGH_AND_LOW_LETTERS_DIFFERENCE)
 	);
 }
 
-bool Recognizer::isUsernameCorrect()
+bool Recognizer::isUsernameCorrect(char c)
 {
 	if (fieldLength > MAX_LENGTH_USERNAME)
 		return false;
 
-	return (isLetterOrNumber(getCurrentChar()));
+	return (isLetterOrNumber(c));
 }
 
-bool Recognizer::isServerCorrect()
+bool Recognizer::isServerCorrect(char c)
 {
 	if (fieldLength > MAX_LENGTH_SERVER)
 		return false;
 
-	return (isLetterOrNumber(getCurrentChar()));
+	return (isLetterOrNumber(c));
 }
 
-bool Recognizer::isDomainCorrect()
+bool Recognizer::isDomainCorrect(char c)
 {	
 	if (fieldLength > MAX_LENGTH_DOMAIN)
 		return false;
 
-	return (isLetterOrNumber(getCurrentChar()));
+	return (isLetterOrNumber(c));
 }
 
-bool Recognizer::isZoneCorrect()
+bool Recognizer::isZoneCorrect(char c)
 {
 	if (fieldLength > MAX_LENGTH_ZONE)
 		return false;
 
-	return (isLetterOrNumber(getCurrentChar()));
+	return (isLetterOrNumber(c));
 }
 
 void Recognizer::DoRecognize()
 {
+	int charIndex;		// индекс текущего символа в строке
 
-	for (int i = 0; i < strings.size(); i++) {
+	// цикл по всем строкам
+	for (int stringIndex = 0; stringIndex < strings.size(); stringIndex++) {
 		fieldLength = 0;
-		stringIndex = i;
 		charIndex = 0;
 		currentRecord.username.clear();
 		currentRecord.server.clear();
@@ -72,11 +73,13 @@ void Recognizer::DoRecognize()
 		std::cout << "Current string: " << strings[stringIndex] << std::endl;
 		std::cout << "Initial state: " << fsm->getState().getName() << "Start reading.\n";
 
+		// разбираем посимвольно строку, пока не получим состояние
+		// "ошибка" или "конец"
 		while (
 			(fsm->getState().getId() != MainMap::Error.getId()) &&
 			(fsm->getState().getId() != MainMap::End.getId())
 			) {
-			fsm->readChar();
+			fsm->readChar(strings[stringIndex][charIndex]);
 			std::cout << "Reading next char... ";
 			std::cout << "Current state: " << fsm->getState().getName() << "\n";
 			charIndex++;
@@ -103,81 +106,76 @@ void Recognizer::DoRecognize()
 	ShowStatistic();
 }
 
-char Recognizer::getCurrentChar()
-{
-	return strings[stringIndex][charIndex];
-}
-
-void Recognizer::preambulaPassed()
+void Recognizer::preambulaPassed(char c)
 {
 	fieldLength = 0;
-	std::cout << "Preambula passed: " << getCurrentChar() << "\n";
+	std::cout << "Preambula passed: " << c << "\n";
 }
 
-void Recognizer::usernamePassed()
+void Recognizer::usernamePassed(char c)
 {
 	fieldLength = 0;
-	std::cout << "Username passed: " << getCurrentChar() << "\n";
+	std::cout << "Username passed: " << c << "\n";
 }
 
-void Recognizer::serverPassed()
+void Recognizer::serverPassed(char c)
 {
 	fieldLength = 0;
-	std::cout << "Server passed: " << getCurrentChar() << "\n";
+	std::cout << "Server passed: " << c << "\n";
 }
 
-void Recognizer::domainPassed()
+void Recognizer::domainPassed(char c)
 {
 	fieldLength = 0;
-	std::cout << "domain passed: " << getCurrentChar() << "\n";
+	std::cout << "domain passed: " << c << "\n";
 }
 
-void Recognizer::zonePassed()
+void Recognizer::zonePassed(char c)
 {
 	fieldLength = 0;
-	std::cout << "Zone passed: " << getCurrentChar() << "\n";
+	std::cout << "Zone passed: " << c << "\n";
 }
 
-void Recognizer::ShowError()
+void Recognizer::showError(char c)
 {
 	fieldLength = 0;
 	std::cout << "Error occured.\n";
 }
 
-bool Recognizer::isPreambulaFinished()
+bool Recognizer::isPreambulaFinished(char c)
 {
 	int preambulaIndex = MAX_LENGTH_PREAMBULA - 1;
 	if ((fieldLength == preambulaIndex) &&
-		(getCurrentChar() == PREAMBULA[preambulaIndex])) {
+		(c == PREAMBULA[preambulaIndex])) {
 		return true;
 	}
 	else
 		return false;
 }
 
-bool Recognizer::isUsernameFinished()
+bool Recognizer::isUsernameFinished(char c)
 {
-	return (getCurrentChar() == '@');
+	return (c == '@');
 }
 
-bool Recognizer::isServerFinished()
+bool Recognizer::isServerFinished(char c)
 {
-	return (getCurrentChar() == '.');
+	return (c == '.');
 }
 
-bool Recognizer::isDomainFinished()
+bool Recognizer::isDomainFinished(char c)
 {
-	return (getCurrentChar() == '.');
+	return (c == '.');
 }
 
-bool Recognizer::isZoneFinished()
+bool Recognizer::isZoneFinished(char c)
 {
-	return (getCurrentChar() == 0);
+	return (c == 0);
 }
 
-bool Recognizer::isStringFinished()
+bool Recognizer::isStringFinished(char c)
 {
-	if (getCurrentChar() == 0) {
+	if (c == 0) {
 		currentRecord.zone = currentRecord.domain;
 		currentRecord.domain.clear();
 		return true;
@@ -186,40 +184,35 @@ bool Recognizer::isStringFinished()
 		return false;
 }
 
-void Recognizer::preambulaReading()
+void Recognizer::preambulaReading(char c)
 {
-	char c = getCurrentChar();
 	std::cout << "Preambula reading: " << c << "\n";
 	fieldLength++;
 }
 
-void Recognizer::usernameReading()
+void Recognizer::usernameReading(char c)
 {
-	char c = getCurrentChar();
 	currentRecord.username.push_back(c);
 	std::cout << "Username reading: " << c << "\n";
 	fieldLength++;
 }
 
-void Recognizer::serverReading()
+void Recognizer::serverReading(char c)
 {
-	char c = getCurrentChar();
 	currentRecord.server.push_back(c);
 	std::cout << "Server reading: " << c << "\n";
 	fieldLength++;
 }
 
-void Recognizer::domainReading()
+void Recognizer::domainReading(char c)
 {
-	char c = getCurrentChar();
 	currentRecord.domain.push_back(c);
 	std::cout << "domain reading: " << c << "\n";
 	fieldLength++;
 }
 
-void Recognizer::zoneReading()
+void Recognizer::zoneReading(char c)
 {
-	char c = getCurrentChar();
 	currentRecord.zone.push_back(c);
 	std::cout << "Zone reading: " << c << "\n";
 	fieldLength++;
@@ -251,6 +244,8 @@ void Recognizer::readFile(std::string filename)
 
 		inputFile.close();
 	}
+	else
+		std::cout "Can't open file input.txt\n";
 }
 
 void Recognizer::countUser()

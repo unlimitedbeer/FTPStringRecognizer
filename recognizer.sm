@@ -14,34 +14,34 @@
 %%
 Preambula
 {
-	readChar[ctxt.isPreambulaFinished()] Username { preambulaPassed(); }
-	readChar[ctxt.isPreambulaCorrect()] Preambula { preambulaReading(); }
-	readChar Error { ShowError(); }
+	readChar(c: const char)[ctxt.isPreambulaFinished(c)] Username { preambulaPassed(c); }
+	readChar(c: const char)[ctxt.isPreambulaCorrect(c)] Preambula { preambulaReading(c); }
+	readChar(c: const char) Error { showError(c); }
 }
 Username
 {
-	readChar[ctxt.isUsernameFinished()] Server { usernamePassed(); }
-	readChar[ctxt.isUsernameCorrect()] Username { usernameReading(); }
-	readChar Error { ShowError(); }
+	readChar(c: const char)[ctxt.isUsernameFinished(c)] Server { usernamePassed(c); }
+	readChar(c: const char)[ctxt.isUsernameCorrect(c)] Username { usernameReading(c); }
+	readChar(c: const char) Error { showError(c); }
 }
 Server
 {
-	readChar[ctxt.isServerFinished()] Domain { serverPassed(); }
-	readChar[ctxt.isServerCorrect()] Server { serverReading(); }
-	readChar Error { ShowError(); }
+	readChar(c: const char)[ctxt.isServerFinished(c)] Domain { serverPassed(c); }
+	readChar(c: const char)[ctxt.isServerCorrect(c)] Server { serverReading(c); }
+	readChar(c: const char) Error { showError(c); }
 }
 Domain
 {
-	readChar[ctxt.isDomainFinished()] Zone { domainPassed(); }
-	readChar[ctxt.isStringFinished()] End { domainPassed(); }
-	readChar[ctxt.isDomainCorrect()] Domain { domainReading(); }
-	readChar Error { ShowError(); }
+	readChar(c: const char)[ctxt.isDomainFinished(c)] Zone { domainPassed(c); }
+	readChar(c: const char)[ctxt.isStringFinished(c)] End { domainPassed(c); }
+	readChar(c: const char)[ctxt.isDomainCorrect(c)] Domain { domainReading(c); }
+	readChar(c: const char) Error { showError(c); }
 }
 Zone
 {
-	readChar[ctxt.isZoneFinished()] End { zonePassed(); }
-	readChar[ctxt.isZoneCorrect()] Zone { zoneReading(); }
-	readChar Error { ShowError(); }
+	readChar(c: const char)[ctxt.isZoneFinished(c)] End { zonePassed(c); }
+	readChar(c: const char)[ctxt.isZoneCorrect(c)] Zone { zoneReading(c); }
+	readChar(c: const char) Error { showError(c); }
 }
 Error
 {
