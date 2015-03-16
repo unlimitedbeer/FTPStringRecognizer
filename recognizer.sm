@@ -1,0 +1,56 @@
+
+// -*- tab-width: 4; -*-
+
+%{
+// Initial revision
+//
+%}
+
+%start MainMap::Preambula
+%header Recognizer.h
+%class Recognizer
+
+%map MainMap
+%%
+Preambula
+{
+	readChar[ctxt.isPreambulaFinished()] Username { preambulaPassed(); }
+	readChar[ctxt.isPreambulaCorrect()] Preambula { preambulaReading(); }
+	readChar Error { ShowError(); }
+}
+Username
+{
+	readChar[ctxt.isUsernameFinished()] Server { usernamePassed(); }
+	readChar[ctxt.isUsernameCorrect()] Username { usernameReading(); }
+	readChar Error { ShowError(); }
+}
+Server
+{
+	readChar[ctxt.isServerFinished()] Domain { serverPassed(); }
+	readChar[ctxt.isServerCorrect()] Server { serverReading(); }
+	readChar Error { ShowError(); }
+}
+Domain
+{
+	readChar[ctxt.isDomainFinished()] Zone { domainPassed(); }
+	readChar[ctxt.isStringFinished()] End { domainPassed(); }
+	readChar[ctxt.isDomainCorrect()] Domain { domainReading(); }
+	readChar Error { ShowError(); }
+}
+Zone
+{
+	readChar[ctxt.isZoneFinished()] End { zonePassed(); }
+	readChar[ctxt.isZoneCorrect()] Zone { zoneReading(); }
+	readChar Error { ShowError(); }
+}
+Error
+{
+ 	nil nil {}
+}
+End
+{
+	nil nil {}
+}
+
+
+%%
