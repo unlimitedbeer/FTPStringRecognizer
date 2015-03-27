@@ -19,6 +19,7 @@
 #include <vector>
 #include <map>
 #include <fstream>
+#include <time.h>
 #include "statemap.h"
 #include "recognizer_sm.h"
 #include "Recognizer.h"

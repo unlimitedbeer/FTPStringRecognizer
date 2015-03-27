@@ -70,8 +70,8 @@ void Recognizer::DoRecognize()
 		currentRecord.zone.clear();
 
 		fsm->setState(MainMap::Preambula);
-		std::cout << "Current string: " << strings[stringIndex] << std::endl;
-		std::cout << "Initial state: " << fsm->getState().getName() << "Start reading.\n";
+		//std::cout << "Current string: " << strings[stringIndex] << std::endl;
+		//std::cout << "Initial state: " << fsm->getState().getName() << "Start reading.\n";
 
 		// разбираем посимвольно строку, пока не получим состояние
 		// "ошибка" или "конец"
@@ -80,19 +80,20 @@ void Recognizer::DoRecognize()
 			(fsm->getState().getId() != MainMap::End.getId())
 			) {
 			fsm->readChar(strings[stringIndex][charIndex]);
-			std::cout << "Reading next char... ";
-			std::cout << "Current state: " << fsm->getState().getName() << "\n";
+			//std::cout << "Reading next char... ";
+			//std::cout << "Current state: " << fsm->getState().getName() << "\n";
 			charIndex++;
 		}
 
 		currentRecord.isStringOK = (fsm->getState().getId() == MainMap::End.getId());
 
+		/*
 		std::cout << "Parsed string:\n";
 		std::cout << "Username: " << currentRecord.username.c_str() << "\n";
 		std::cout << "Server: " << currentRecord.server.c_str() << "\n";
 		std::cout << "Domain: " << currentRecord.domain.c_str() << "\n";
 		std::cout << "Zone: " << currentRecord.zone.c_str() << "\n";
-
+		*/
 		if (currentRecord.isStringOK) {
 			std::cout << "String is OK\n";
 			countUser();
@@ -100,7 +101,7 @@ void Recognizer::DoRecognize()
 		else
 			std::cout << "String contain error\n";
 
-		std::cout << "\n";
+		//std::cout << "\n";
 	}
 
 	ShowStatistic();
@@ -109,37 +110,37 @@ void Recognizer::DoRecognize()
 void Recognizer::preambulaPassed(char c)
 {
 	fieldLength = 0;
-	std::cout << "Preambula passed: " << c << "\n";
+	//std::cout << "Preambula passed: " << c << "\n";
 }
 
 void Recognizer::usernamePassed(char c)
 {
 	fieldLength = 0;
-	std::cout << "Username passed: " << c << "\n";
+	//std::cout << "Username passed: " << c << "\n";
 }
 
 void Recognizer::serverPassed(char c)
 {
 	fieldLength = 0;
-	std::cout << "Server passed: " << c << "\n";
+	//std::cout << "Server passed: " << c << "\n";
 }
 
 void Recognizer::domainPassed(char c)
 {
 	fieldLength = 0;
-	std::cout << "domain passed: " << c << "\n";
+	//std::cout << "domain passed: " << c << "\n";
 }
 
 void Recognizer::zonePassed(char c)
 {
 	fieldLength = 0;
-	std::cout << "Zone passed: " << c << "\n";
+	//std::cout << "Zone passed: " << c << "\n";
 }
 
 void Recognizer::showError(char c)
 {
 	fieldLength = 0;
-	std::cout << "Error occured.\n";
+	//std::cout << "Error occured.\n";
 }
 
 bool Recognizer::isPreambulaFinished(char c)
@@ -186,35 +187,35 @@ bool Recognizer::isStringFinished(char c)
 
 void Recognizer::preambulaReading(char c)
 {
-	std::cout << "Preambula reading: " << c << "\n";
+	//std::cout << "Preambula reading: " << c << "\n";
 	fieldLength++;
 }
 
 void Recognizer::usernameReading(char c)
 {
 	currentRecord.username.push_back(c);
-	std::cout << "Username reading: " << c << "\n";
+	//std::cout << "Username reading: " << c << "\n";
 	fieldLength++;
 }
 
 void Recognizer::serverReading(char c)
 {
 	currentRecord.server.push_back(c);
-	std::cout << "Server reading: " << c << "\n";
+	//std::cout << "Server reading: " << c << "\n";
 	fieldLength++;
 }
 
 void Recognizer::domainReading(char c)
 {
 	currentRecord.domain.push_back(c);
-	std::cout << "domain reading: " << c << "\n";
+	//std::cout << "domain reading: " << c << "\n";
 	fieldLength++;
 }
 
 void Recognizer::zoneReading(char c)
 {
 	currentRecord.zone.push_back(c);
-	std::cout << "Zone reading: " << c << "\n";
+	//std::cout << "Zone reading: " << c << "\n";
 	fieldLength++;
 }
 
@@ -245,7 +246,7 @@ void Recognizer::readFile(std::string filename)
 		inputFile.close();
 	}
 	else
-		std::cout "Can't open file input.txt\n";
+		std::cout << "Can't open file 'input.txt'.\n";
 }
 
 void Recognizer::countUser()
